@@ -22,7 +22,7 @@ Q2 answer: egrep zz words.txt | egrep -v "'s"
 
 3) Write an egrep command that prints the words that contain four consecutive vowels?
 
-Q3 answer: 
+Q3 answer: egrep [aeiou] words.txt
 
 
 4) Write an egrep command that prints words which contain all 5 vowels "aeiou" in that order?
