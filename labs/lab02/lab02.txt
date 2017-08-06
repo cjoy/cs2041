@@ -111,14 +111,14 @@ all pairs of adjacent A's occur before any pairs of adjacent B's.
 In other words if there is pair of B's on the line , there can not be
 a pair of A's afterwards.
 
-Q17 answer:
+Q17 answer: egrep -v 'BB.*AA|[^AB]' input.txt
 
 
 18) Write a regular expression  for egrep that matches any line containing
 only the characters A and  B such that
 the number of A's is divisible by 4.
 
-Q18 answer:
+Q18 answer:  egrep '(A{4}B{4})+' input.txt
 
 
 19) Write a regular expression for egrep  that matches any line containing
@@ -126,5 +126,5 @@ only the characters A and  B such that
 there are exactly n A's followed by
 exactly n B's and no other characters.
 
-Q19 answer:
+Q19 answer: egrep "^(A(?1)?B)" input.txt
 
