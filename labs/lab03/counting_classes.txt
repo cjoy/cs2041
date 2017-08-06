@@ -33,7 +33,7 @@ Q4 answer: cat classes.txt | egrep -v 'LAB' | sort -n | cut -f5 | sort | uniq -c
 5) Write a shell pipeline  that prints the most popular time-of-day for classes to
 start and how many classes start at that time?
 
-Q5 answer: cat classes.txt | cut -c19-24 | sort | uniq | sort | cat classes.txt | cut -c19-24 | sort | uniq -c | sort | tail -1
+Q5 answer: cat classes.txt | cut -c19-24 | sort | uniq -c | sort | tail -1
 
 
 6) Challenge: write a shell pipeline that prints list of the course codes (only) of COMP courses that
