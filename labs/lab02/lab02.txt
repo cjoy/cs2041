@@ -118,7 +118,7 @@ Q17 answer: egrep -v 'BB.*AA|[^AB]' input.txt
 only the characters A and  B such that
 the number of A's is divisible by 4.
 
-Q18 answer:  egrep '(A{4}B{4})+' input.txt
+Q18 answer: egrep '^A*(AB*){4}$'\|'^A*(AB*){8}$' input.txt
 
 
 19) Write a regular expression for egrep  that matches any line containing
