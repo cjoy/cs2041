@@ -1,7 +1,7 @@
 #!/bin/bash
 wor=`echo $1 | cut -c1`
-undergrad=`wget -q -O- "http://www.handbook.unsw.edu.au/vbook2017/brCoursesByAtoZ.jsp?StudyLevel=Undergraduate&descr=$wor"|grep $1| sed -e 's/<[^>]*>//g' | cat -A | tr -d '^I' | tr -d '$' | egrep -v "Use this search only if you have an exact code for a Program"`
-postgrad=`wget -q -O- "http://www.handbook.unsw.edu.au/vbook2017/brCoursesByAtoZ.jsp?StudyLevel=Postgraduate&descr=$wor"|grep $1| sed -e 's/<[^>]*>//g' | cat -A | tr -d '^I' | tr -d '$' | egrep -v "Use this search only if you have an exact code for a Program"`
+undergrad=`wget -q -O- "http://www.handbook.unsw.edu.au/vbook2017/brCoursesByAtoZ.jsp?StudyLevel=Undergraduate&descr=$wor"|grep $1| sed -e 's/<[^>]*>//g' | tr -d '\t' | tr -d '$' | egrep -v "Use this search only"`
+postgrad=`wget -q -O- "http://www.handbook.unsw.edu.au/vbook2017/brCoursesByAtoZ.jsp?StudyLevel=Postgraduate&descr=$wor"|grep $1| sed -e 's/<[^>]*>//g' | tr -d '\t' | tr -d '$' | egrep -v "Use this search only"`
 
 IFS='
 '
@@ -39,5 +39,4 @@ do
 	count=$(($count+1))
 done
 
-allgrad=$ugrad$pgrad
-echo -e "$allgrad" | sort | uniq | sort -n
+echo -e "$ugrad\n$pgrad" | sort | uniq
