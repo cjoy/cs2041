@@ -39,4 +39,26 @@ do
 	count=$(($count+1))
 done
 
-echo -e "$ugrad\n$pgrad" | sort | uniq
+#num_ugrad=`echo -e "$ugrad" | wc -l`
+#num_pgrad=`echo -e "$pgrad" | wc -l`
+#echo $num_ugrad
+#echo $num_pgrad
+
+#if (( $num_ugrad < 1 )) && (( $num_pgrad >= 1 ))
+#then
+	#echo 'no ugrad but pgrad'
+#	allgrad=`echo -e "$pgrad"`
+#elif (( $num_ugrad >= 1 )) && (( $num_pgrad < 1 ))
+#then
+	#echo 'no pgrad but ugrad'
+#	allgrad=`echo -e "$ugrad"`
+#elif  (( $num_ugrad < 1 )) && (( $num_pgrad < 1 ))
+#then
+	#echo 'no pgrad and ugrad'
+#	allgrad=`echo -e ""`
+#else
+	#echo 'both pgrad and ugrad'	
+#	allgrad=`echo -e "$ugrad\n$pgrad"`
+#fi
+
+echo -e "$ugrad\n$pgrad" | sort | uniq | sed -e '/^$/d' | sed 's/\s*$//g' | uniq
