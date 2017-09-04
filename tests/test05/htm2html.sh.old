@@ -1,0 +1,11 @@
+#!/bin/bash
+for file in `ls *.htm*`;
+do
+	fileName=`echo $file | cut -d'.' -f1`
+	if [ ! -e $fileName.html ]; then
+		mv $file $fileName.html
+	else
+		echo $fileName.html exists
+		exit 1
+	fi
+done

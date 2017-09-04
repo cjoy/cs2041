@@ -1,3 +1,2 @@
-#!/bin/bash
-
-cat $1 | cut -d'|' -f3 | cut -d',' -f2 | column -t | cut -d' ' -f1 | sort -n | uniq -c | sort -n | tail -1 | column -t | sed -e 's/[0-9]//g' | column -t
+#!/bin/sh
+cat $1  | egrep 'COMP[29]041' | cut -d' ' -f2 | sort | uniq -c | sort | tail -1 | sed 's/[0-9]//g' | sed 's/ //g'

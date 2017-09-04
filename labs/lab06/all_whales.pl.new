@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+
+@whales = ();
+
+while ( ($line = <STDIN>) =~ /\S/ ) {
+	push @whales, $line;
+}
+
+for ($i = 0; $i < @whales; $i++) {
+	$whales[$i] =~ /^([0-9]+);
+	print $1
+}

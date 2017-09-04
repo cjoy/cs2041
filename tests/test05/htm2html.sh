@@ -1,13 +1,15 @@
 #!/bin/bash
 
-for file in `ls *.htm*`;
+IFS='
+'
+files=`ls -d *.htm`
+for file in $files;
 do
-	fileName=`echo $file | cut -d'.' -f1`
-	if [ -e $fileName.html ];
-	then
-		echo $fileName exists
-		exit
+	fileName=`echo $file | sed -e 's/.htm//g'`
+	if [ ! -e "$fileName.html" ]; then
+		mv "$file" "$fileName.html"
 	else
-		 mv $file $fileName.html
+		echo $fileName.html exists
+		exit 1
 	fi
 done
