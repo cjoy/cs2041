@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+
+$find = lc @ARGV[0];
+
+$total_words = 0;
+
+
+while ($line = <STDIN>) {
+	chomp $line;
+	$line = lc $line;
+	@words = grep(/./, split(/[^a-zA-Z]/, $line));
+	foreach $i (@words) {
+		if ($i =~ /^$find$/i) {
+			$count++
+		}
+	
+
+
+	$total_words += 0+@words;
+}
+
+print $count, "\n";

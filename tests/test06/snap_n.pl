@@ -1,9 +1,9 @@
 #!/usr/bin/perl -w
 
-while ((my $line = <STDIN>) =~ /\S/ ) {
-	$numLine{$line}++;
-	if ($numLine{$line} == $ARGV[0]) {
-		print "Snap: $line";
+while (<STDIN>) {
+	$numLine{$_}++;
+	if ($numLine{$_} == $ARGV[0]) {
+		print "Snap: $_";
 		exit(0);
 	}
 }
