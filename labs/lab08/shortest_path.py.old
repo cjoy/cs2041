@@ -1,0 +1,43 @@
+#!/usr/bin/python3
+
+import sys
+
+
+start = sys.argv[1]
+dest = sys.argv[2]
+
+# generate a Undirected Graph
+Graph = {}
+for line in sys.stdin:
+	line = line.split()
+	t1 = line[0]
+	t2 = line [1]
+	tl = int(line[2])	
+	if (t1 not in Graph):
+		Graph[t1] = [{t2:tl}]
+	else:
+		Graph[t1].append({t2:tl})
+	if (t2 not in Graph):
+		Graph[t2] = [{t1:tl}]
+	else:
+		Graph[t2].append({t1:tl})
+
+
+print("-------------------------------")
+for node in Graph:
+	print(node,end=": ")
+	for edge in Graph[node]:
+		print(edge, end="->")
+	print()
+print("-------------------------------")
+
+
+dist = 0
+towns=Graph[start] 
+for t in towns:
+	if t[dest]:
+		print("print found!")
+		dist=0
+		break
+	print(t)
+
