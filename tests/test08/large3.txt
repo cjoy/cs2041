@@ -1,0 +1,5 @@
+the quick brown f42ox
+4 9 42 2 4
+1 2 3 4 42.0
+no forty two
+last 42

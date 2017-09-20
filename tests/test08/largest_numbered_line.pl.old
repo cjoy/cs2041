@@ -1,0 +1,23 @@
+#!/usr/bin/perl 
+
+$max = -100;
+while (($line = <STDIN>) =~ /\S/) {
+	chomp $line;
+#	@nums = split /[^(-?)\d+]/, $line;
+	@nums = split(/[^(-?)\d+]/, $line);
+	foreach $n (@nums) {
+		$n =~ /^-\d*\.?\d+$/;
+		if ($n > $max) {
+			$max = scalar $n;
+			$maxL = $line;
+			break;
+		} elsif ($n == $max) {
+			$maxL .= "\n$line";
+			break;
+		}
+		print "$n ";
+	}
+	print "\n";
+}
+
+#print "$maxL\n";
