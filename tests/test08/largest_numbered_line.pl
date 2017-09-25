@@ -12,17 +12,17 @@ while ($line = <STDIN>) {
 	foreach $n (@numbers) {
 		if (!$mN) {
 			$mN = $n;
-			$mL = $line;
+			$mL = "$line\n";
 		} elsif ($mN < $n) {
 			$mN = $n;
-			$mL = $line;
+			$mL = "$line\n";
 		} elsif ($mN == $n) {
-			$mL .= "\n$line";
+			$mL .= "$line\n";
 		}
 	}
 
 }
 
 
-print "$mL \n";
+print "$mL";
 

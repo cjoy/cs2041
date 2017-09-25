@@ -9,7 +9,10 @@ while ($line = <F>) {
 }
 
 $num = scalar @text;
-if ($num%2 != 0) {
+
+if ($num == 0) {
+	
+} elsif ($num%2 != 0) {
 	$middle = $num/2;
 	print $text[$middle], "\n";
 } else {
