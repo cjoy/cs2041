@@ -2,51 +2,18 @@
 
 # Template written by Prof. Andrew Taylor.
 
+# libraries need for translation
+require './lib/helpers.pl';
+require './lib/translators.pl';
+
 # global translation variables
-my @brackets;
-my $currTab = 0;
-my $prevTab = 0;
-
-# helper functions
-
-# current tab for line
-
-sub closeBrackets {
-	while ($#brackets + 1 > 0) {
-		# printTab(1);
-		pop (@brackets);
-		print ("\}\n");
-		$currTab--;
-	}
-}
-
-sub tabIndex {
-	if (defined $_[0]) {
-		$string = $_[0];
-		$string =~ /^(\s+)/;
-		$currTab = length($1);
-		if (defined $currTab) {
-			return $currTab;
-		} else {
-			return 0;
-		}
-	}
-	return 0;
-}
-
-sub printTab {
-	# fix single line tabs
-	if ($_[0] == 1) {
-		$_[0] = 4;
-	}
-	print " "x$_[0];
-}
-
+our @brackets;
+our $currTab = 0;
+our $prevTab = 0;
 
 while ($sentence = <>) {
-
 	# split sentence incase of single line programs
-	if ($sentence !~ /\: \"\)/) {
+	if ($sentence !~ /\: \"\)/ && $sentence !~ /\:\]/) {
 		@subset = split (/[;:]/, $sentence);
 	} else {
 		undef @subset;
@@ -55,26 +22,21 @@ while ($sentence = <>) {
 
 	foreach $line (@subset) {
 	if ($line =~ /^\s*$/ || $line =~ /import/) {} else {
-		# $prevTab = $currTab;
-		# $currTab = tabIndex($line);
-		# print $currTab;
-		# printTab($currTab);
-		# if ($currTab < $prevTab) {
-		# 	print "}\n";
-		# 	pop (@brackets)
-		# }
+		$comment = 0;
 
-
+		# MANAGE INDENTS & CONTROL FLOW
 		$prevTab = $currTab;
 		$currTab = tabIndex($line);
-		if ($currTab < $prevTab) {
+		if ($currTab < $prevTab && $line !~ "\t") {
 			printTab($currTab);
 			print "}\n";
 			pop (@brackets)
 		}
+		# for debugging tab index
 		# print $currTab;
 		printTab($currTab);
 
+		# START REGEX BASED TRANSLATION
 
 	    # SHEBANG INTERPRETER LINE
 	    if ($line =~ /^#!/ && $. == 1) {
@@ -83,6 +45,22 @@ while ($sentence = <>) {
 	    # COMMENTS
 	    elsif ($line =~ /^\s*(#|$)/) {
 	    	$line = $line;
+	    	$comment = 1;
+		}
+	    # REGEX SUBSTITUE
+	    elsif ($line =~ /\s=\sre\.sub/) {
+	    	$line = subTranslate($line);
+	    	$line .= ";";
+	    }
+	    # ARRAYS
+	 #    elsif ($line =~ /.+\=.*\[.+\]/) {
+	 #    	$line = arrayTranslate($line);
+	 #    	$line .= ";";
+		# }
+
+		# INIT HASH MAP
+		elsif ($line =~ /\s=\s\{\}/) {
+			$line = "";
 		}
 		# PRINT STATMENT
 	    elsif ($line =~ /^\s*print\((.*)\)$/) {
@@ -116,34 +94,42 @@ while ($sentence = <>) {
 	    # WHILE STATEMENT
 	    elsif ($line =~ /(\s+|^)while\s+/) {
 	    	$line = whileTranslate($line);
-	    	push (@brackets, "\{");
+	    	push (@brackets, 1);
 	    }
-
+	    # FOR ARG
+	    elsif ($line =~ /\sin\ssys\.argv\[1:\]/) {
+	    	$line = forargTranslate($line);
+	    	push (@brackets, 1);
+	    }
+	    # FOR FILE INPUT
+	    elsif ($line =~ /\sin\sfileinput\.input\(\)/) {
+	    	$line = forfileinTranslate($line);
+	    	push (@brackets, 1);
+	    }
 	    # FOR STDIN STATEMENT
 	    elsif ($line =~ /for \w+ in sys.stdin/) {
 	    	$line = forstdinTranslate($line);
-	    	push (@brackets, "\{");
+	    	push (@brackets, 1);
 	    }
-
 	    # FOR STATEMENT
-	    elsif ($line =~ /(\s+|^)for \w+ in\s+/) {
+	    elsif ($line =~ /for \w+ in range/) {
 	    	$line = forTranslate($line);
-	    	push (@brackets, "\{");
+	    	push (@brackets, 1);
 	    }
 	    # IF STATEMENT
 	    elsif ($line =~ /(\s+|^)if\s+/) {
 	    	$line = ifTranslate($line);
-	    	push (@brackets, "\{");
+	    	push (@brackets, 1);
 	    }
 	    # ELSE IF STATEMENT
 	    elsif ($line =~ /(\s+|^)elif\s+/) {
 	    	$line = elifTranslate($line);
-	    	push (@brackets, "\{");
+	    	push (@brackets, 1);
 	    }
 	    # ELSE STATEMENT
 	    elsif ($line =~ /else/) {
 	    	$line = elseTranslate($line);
-	    	push (@brackets, "\{");
+	    	push (@brackets, 1);
 	    	printTab($currTab);
 	    }
 	    # ELSE STATEMENT
@@ -154,187 +140,21 @@ while ($sentence = <>) {
 	    elsif ($line =~ /append/) {
 	    	$line = appendTranslate($line);
 	    }
-
-
-
-
-
 	    # UNTRANSLATABLE LINES
 	    else {
 	        $line = "#$line";
 	    }
+
 	    # PRINT EXCLUDING IGNORED LINES
-	    print "$line\n";
+	    if ($comment == 1) {
+		    print "$line";
+    	} else {
+		    print "$line\n";
+    	}
 
 	}}
 
 }
 
-
+# pop out all brackets when done
 closeBrackets();
-
-
-sub ifTranslate {
-	$string = $_[0];
-	$string =~ s/if //g;
-	$string = assignTranslate($string);
-	return "if ($string) {";
-}
-
-
-sub elifTranslate {
-	$string = $_[0];
-	$string =~ s/elif //g;
-	$string = assignTranslate($string);
-	return "elsif ($string) {";
-}
-
-sub elseTranslate {
-	$string = $_[0];
-	$string =~ s/else //g;
-	return "else {";
-}
-
-
-sub appendTranslate {
-	$string = $_[0];
-	@components = split /\./, $string;
-	$subArr = $components[0];
-	$subArr =~ s/\s+//g;
-	$sub = $components[1];
-	$sub =~ s/^.*.\(//g;
-	$sub =~ s/\)$//g;
-	return "push \@$subArr, \$$sub";
-}
-
-sub whileTranslate {
-	$string = $_[0];
-	$string =~ s/while //g;
-	$string = assignTranslate($string);
-	return "while ($string) {";
-}
-
-sub forTranslate {
-	$string = $_[0];
-	$string =~ s/\(/ /g;
-	$string =~ s/\,//g;
-	$string =~ s/\)/ /g;
-	$string = assignTranslate($string);
-	@components = split / /, $string;
-	if ($components[5] =~ /\d/) {
-		$components[5] = $components[5] - 1;
-	}
-	return "foreach $components[1] ($components[4]..$components[5]) {";
-}
-
-
-
-sub forstdinTranslate {
-	$string = $_[0];
-	@components = split / /, $string;
-
-	return "foreach \$$components[1] (<STDIN>) {";
-}
-
-
-sub sysoutTranslate {
-	return "print $_[0]"
-}
-
-
-sub sysinTranslate {
-	$string = $_[0];
-	@components = split /=/, $string;
-	$var = $components[0];
-	$var =~ s/ //g;
-	# $components[0] = s///g;
-	return "\$$var = <STDIN>"
-}
-
-
-
-sub printTranslate {
-	$string = $_[0];
-	$endLine = "";
-	if ($string !~ /end=''/) {
-		$endLine = "\\n";
-	}
-
-	$string =~ /^\s*print\((.*)\)$/;
-	$transString = assignTranslate($1);
-
-	$finalString = "print \"$endLine\"";
-	if ($transString ne "") {
-		$finalString = "print \($transString, \"$endLine\"\)";
-	}
-
-	# remove end=''
-	$finalString =~ s/, end=\'\', \"\"//g;
-
-	return $finalString;
-}
-
-
-sub conditionTranslate {
-	$string = $_[0];
-	$string =~ s/\$if//;
-	$string =~ s/\$\&\&/&&/;
-	$string =~ s/\$\|\|/||/;
-	$string =~ s/\$\!\=/!=/;
-	return $string;
-}
-
-
-
-
-# Credit: This assignment translation function has been adapted from Perthon on sourceForge
-sub assignTranslate {
-	my $letter= "";
-	my $reset = 0;
-	my $inQuote = 0;
-
-	@section = split (" ", $_[0]);
-	foreach $section (@section) {
-		if ($reset == 1) {
-			$inQuote = 0;
-			$reset = 0;
-		}
-		if ($section =~ /[a-z]+/) {
-				if ($section =~ /\".+\"/ || $section =~ /\'.+\'/) {
-					$inQuote = 1;
-					$reset = 1;
-				} elsif ($section =~ /\"/ || $section =~ /\'/) {
-					$inQuote = !$inQuote;
-				} elsif ($inQuote == 0) {
-					$section = "\$$section";
-					$section =~ s/(^\s*)//;
-					$section =~ s/\bnot\b/\!\=/g;
-					$section =~ s/\band\b/\&\&/g;
-					$section =~ s/\bor\b/\|\|/g;
-				}
-		} elsif ($section =~ /\+/ && $inQuote == 1) {
-			$section = '.';
-		}
-
-		if ($letter ne "") {
-			$letter .= " ";
-		}
-		$letter .= $section;
-	}
-
-	if ($letter =~ /\[/) {
-		@section = split ("\\[", $letter);
-		$letter = "$section[0]\[\$$section[1]";
-	}
-
-	$letter =~ s/\/\//\//g;
-
-	# array numbers
-	if ($letter =~ /\$len/) {
-		$letter =~ s/\$len/@/g;
-		$letter =~ s/\(//g;
-		$letter =~ s/\)//g;
-	}
-
-	return $letter;
-}
