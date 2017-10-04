@@ -13,7 +13,9 @@ our $prevTab = 0;
 
 while ($sentence = <>) {
 	# split sentence incase of single line programs
-	if ($sentence !~ /\: \"\)/ && $sentence !~ /\:\]/) {
+	if ($sentence !~ /\: \"\)/ &&
+		$sentence !~ /\:\]/ &&
+		$sentence !~ /^#/) {
 		@subset = split (/[;:]/, $sentence);
 	} else {
 		undef @subset;
@@ -155,6 +157,5 @@ while ($sentence = <>) {
 	}}
 
 }
-
-# pop out all brackets when done
+# clear brackets - helper
 closeBrackets();

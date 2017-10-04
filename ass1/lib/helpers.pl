@@ -24,7 +24,7 @@ sub tabIndex {
 sub printTab {
 	# fix single line tabs
 	if ($_[0] == 1) {
-		$_[0] = 4;
+		# $_[0] = 4;
 	}
 	print " "x$_[0];
 }

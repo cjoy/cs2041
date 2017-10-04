@@ -126,62 +126,6 @@ sub printTranslate {
 }
 
 
-
-
-sub arrayTranslate {
-	$string = $_[0];
-	@components = split ("=", $string);
-	$identifier = $components[0];
-	$part = $components[1];
-	$part =~ s/\]//g;
-	$part =~ s/\[//g;
-	$part =~ s/ //g;
-	$final = "\@$identifier = \( $part \)";
-	return $final;
-}
-
-
-
-
-sub conditionTranslate {
-	$string = $_[0];
-	$string =~ s/\$if//;
-	$string =~ s/\$\&\&/&&/;
-	$string =~ s/\$\!\=/!=/;
-	$string =~ s/\$\|\|/||/;
-	return $string;
-}
-
-
-
-sub subTranslate {
-	$string = $_[0];
-	@components = split / /, $string;
-	# $components[0] = s/s//g;
-	$identifier = $components[0];
-	$identifier =~ s/\s//g;
-
-	@nextcomponent = split /=/, $string;
-	$value = $nextcomponent[1];
-	$value =~ s/^.*.\(//g;
-	$value =~ s/\).*$//g;
-	@regextree = split /,/, $value;
-	$regTarget = $regextree[0];
-	$regTarget =~ s/r\'//g;
-	$regTarget =~ s/\'//g;
-
-	$regDest = $regextree[1];
-	$regDest =~ s/\s\'//g;
-	$regDest =~ s/\'//g;
-
-	# print "$value\n";
-
-
-	return "\$$identifier \=\~ s/$regTarget/$regDest/g";
-}
-
-
-# Credit: This assignment translation function has been igora from Github.com
 sub assignTranslate {
 	my $again = 0;
 	my $quote = 0;
@@ -241,6 +185,61 @@ sub assignTranslate {
 
 	return $final;
 }
+
+
+
+
+sub arrayTranslate {
+	$string = $_[0];
+	@components = split ("=", $string);
+	$identifier = $components[0];
+	$part = $components[1];
+	$part =~ s/\]//g;
+	$part =~ s/\[//g;
+	$part =~ s/ //g;
+	$final = "\@$identifier = \( $part \)";
+	return $final;
+}
+
+
+# IF STATMENT TRANSLATOR
+sub conditionTranslate {
+	$string = $_[0];
+	$string =~ s/\$if//;
+	$string =~ s/\$\&\&/&&/;
+	$string =~ s/\$\!\=/!=/;
+	$string =~ s/\$\|\|/||/;
+	return $string;
+}
+
+
+# PTHON RE.SUB TRANSLATE i.e  using perl's split
+sub subTranslate {
+	$string = $_[0];
+	@components = split /=/, $string;
+	# $components[0] = s/s//g;
+	$identifier = $components[0];
+	$identifier =~ s/\s//g;
+
+	@nextcomponent = split /=/, $string;
+	$value = $nextcomponent[1];
+	$value =~ s/^.*.\(//g;
+	$value =~ s/\).*$//g;
+	@regextree = split /,/, $value;
+	$regTarget = $regextree[0];
+	$regTarget =~ s/r\'//g;
+	$regTarget =~ s/\'//g;
+
+	$regDest = $regextree[1];
+	$regDest =~ s/\s\'//g;
+	$regDest =~ s/\'//g;
+
+	# print "$value\n";
+
+	return "\$$identifier \=\~ s/$regTarget/$regDest/g";
+}
+
+
 
 
 1;

@@ -1,1 +1,19 @@
-13/09/17	18:00	18:15	put the first real entry in diary.txt (delete this line!)
+25/09/17	14:00	14:40	reading through assignment specifications
+25/09/17	12:15	13:00	trying to plan out possible test cases
+27/09/17	14:15	15:15	assignment statment translation
+27/09/17	14:15	15:15	continuing on assignment function, fixing bracket issue
+27/09/17	14:13	15:15	figuring out how to split single line statments, working on subset 2
+29/09/17	11:15	11:30	fixing inline commentds
+29/09/17	12:01	12:40 	working on bracketing and tab indentations methods
+29/09/17	20:15	21:00	working through subset 3 examples
+29/09/17	23:11	23:45	continuing on subset 3
+01/10/17	18:15	19:15	working on subset 4
+01/10/17	18:15	19:12	fixing inline indentation error
+02/10/17	09:00	10:32	refactoring bracket method
+03/10/17	12:15	12:45	working on system std commands
+03/10/17	14:05	15:17	trying to tokenise brackets instead of hardcoding it
+03/10/17	18:12	18:40	giving up on assignment
+03/10/17	19:15	19:34	splitting up translation and helper methods into several sub modules
+03/10/17	20:15	20:55	writing test cases and demo programs
+03/10/17	22:15	22:32	fixing up a few more bugs
+04/10/17	15:15	15:52	submitting assignment
