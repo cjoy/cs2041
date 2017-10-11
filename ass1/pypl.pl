@@ -3,8 +3,8 @@
 # Template written by Prof. Andrew Taylor.
 
 # libraries need for translation
-require './lib/helpers.pl';
-require './lib/translators.pl';
+require 'helpers.pl';
+require 'translators.pl';
 
 # global translation variables
 our @brackets;
