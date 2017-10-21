@@ -1,0 +1,17 @@
+{% extends "peer_base.html" %}
+{% block body %}
+
+{% if median != "none" %}
+    These assessments have been entered for you:
+    <br>
+    <ul>
+        {% for peer in peer_assessments %} 
+        <li><b>{{peer['grade_given']}}</b> from {{peer['marker_id']}} {{peer['marker_name']}}</li>
+        {% endfor %}
+    </ul>
+    Your overall grade is the median of the above: <b>{{median}}</b>    
+    {% else %}
+    No students have entered assessments for you    
+{% endif %}    
+
+{% endblock %}
