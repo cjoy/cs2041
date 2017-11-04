@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------------------
+These shell statements are executed:
+
+cat numbers|sed 's/[a-j].*/ /g'|sort
+
+The file numbers contains these 4 lines:
+
+2nd 3rd
+4th 5th 6th
+7th 8th 9th 10th
+11th
+
+The shell statements execute without errors or warnings. Exactly what output does it produce?
+
+Note: the file numbers contains only 4 lines. It contains no blank lines and no leading or trailing white space. 
+
+ANSWER:
+11t
+2n
+4t
+7t
+
+---------------------------------------------------------------------------------------

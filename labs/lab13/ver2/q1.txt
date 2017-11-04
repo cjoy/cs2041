@@ -1,0 +1,29 @@
+==============================================================
+This Perl code is executed:
+
+while () {
+    chomp;
+    @a = split;
+    $h{$a[0]} .= $a[1];
+}
+print "$h{a}\n";
+
+with these 6 lines of input:
+
+a 6
+b 5
+c 4
+a 3
+b 2
+c 1
+
+The Perl executes without errors or warnings. What output does it produce?
+
+Note: there are 6 lines of input. There are no blank lines and no leading or trailing white space. 
+
+
+ANSWER:
+63
+
+==============================================================
+
