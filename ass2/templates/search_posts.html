@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block body_contents %}
+<!--- Comment Box Utils -->
+<style>
+.comment-box {
+    display: none;
+}
+
+</style>
+<script>
+    function openComment(id) {
+        $("#"+id).slideToggle('fast')
+    }
+</script>
+<!--- /Comment Box Utils -->
+
+<div class="container">
+
+<div class="mdl-card mdl-shadow--2dp" style="width:100%; min-height:20px; margin-bottom:20px; padding:20px">
+    <form action="{{url_for('search_posts')}}" method="get">
+        <div class="form-group row">
+            <div class="col-10">
+               <input type="text" name="q" class="form-control form-control-lg" id="lgFormGroupInput" autofocus placeholder="Search For Posts in your Feeds" value="{{ query }}">
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary" style="width:100%; height:100%">Search Posts</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% if query %}
+<div class="mdl-card mdl-shadow--2dp" style="width:100%">
+    <div style="padding: 40px">
+        <h2> {{ results|length }} posts found - "{{ query }}" </h2><hr>
+
+        {% for post in results %}
+        <div class="mdl-card mdl-shadow--2dp" style="width:100%; padding: 40px; margin-bottom:40px">
+
+        <div class="row">
+            <div class="comments col-md-9" id="comments">
+                <!-- post -->
+                <div class="comment mb-2 row">
+                    <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
+                        <a href="{{url_for('profile', zid=post.content._from)}}">
+                            <img class="mx-auto rounded-circle img-fluid" 
+                            src="{{url_for('static', filename=RemoveStatic( GetProfilePic(post.content._from) ))}}"
+                            
+                            alt="avatar"></a>
+                    </div>
+                    <div class="comment-content col-md-11 col-sm-10">
+                        <h6 class="small comment-meta"><a href="{{url_for('profile', zid=post.content._from)}}">{{ getdetails(post.content._from).full_name }}</a> {{ parseTime(post.content.time) }}</h6>
+                        <div class="comment-body">
+                            {% if post.content.message %}                        
+                            <p>
+                                {{ ParseMessage(post.content.message)|safe }}
+                                <form class="form-inline" method="post" action="{{url_for('delete_comment')}}">
+                                    <input type="hidden" name="addr" value="{{post.id}}"/>
+                                    <input type="button" class="input-group btn btn-secondary small" style="width:55px"
+                                        onclick="openComment('{{CleanID(post.id)}}');" value="Reply"/>
+                                    {% if session['zid'] == post.content._from %}
+                                    <button style="margin-left:10px" class="btn btn-info small" type="submit"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    {% endif %}
+                                </form>            
+                            </p>
+                            <!-- Comment Box -->
+                            <div class="comment-box" id="{{CleanID(post.id)}}">
+                                <form action="{{url_for('new_comment')}}" method="post">
+                                    <div class="row">
+                                        <input type="hidden" name="parent" value="{{post.id}}">
+                                        <div class="col-2">
+                                            <img class="mx-auto rounded-circle img-fluid" 
+                                            src="{{url_for('static', filename=RemoveStatic( GetProfilePic(session['zid']) ))}}" 
+                                            alt="avatar">
+                                        </div>
+                                        <div class="col-9">
+                                            <div class="form-group">
+                                                <textarea class="form-control" id="post-box" name="content" rows="3" placeholder="Reply to comment" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-1">
+                                            <button class="btn btn-primary" type="submit">Post Reply</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /Comment Box -->
+                            {% endif %}
+                        </div>
+                    </div>
+                        
+                    <!-- comment is indented -->
+                    {% for comment in post.comments %}
+                    <div class="comment-reply col-md-11 offset-md-1 col-sm-10 offset-sm-2">
+                        <div class="row">
+                            <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
+                                <a href="{{url_for('profile', zid=comment.content._from)}}"><img class="mx-auto rounded-circle img-fluid" 
+                                    src="{{url_for('static', filename=RemoveStatic( GetProfilePic(comment.content._from) ))}}" 
+                                    alt="avatar"></a>
+                            </div>
+                            <div class="comment-content col-md-11 col-sm-10 col-12">
+                                <h6 class="small comment-meta"><a href="{{url_for('profile', zid=comment.content._from)}}">{{ getdetails(comment.content._from).full_name }}</a> {{ parseTime(comment.content.time) }}</h6>
+                                <div class="comment-body">
+                                    {% if comment.content.message %}
+                                    <p>{{ ParseMessage(comment.content.message)|safe  }}
+                                        <br>
+                                        <form class="form-inline" method="post" action="{{url_for('delete_comment')}}">
+                                            <input type="hidden" name="addr" value="{{comment.id}}"/>
+                                            <input type="button" class="input-group btn btn-secondary small" style="width:55px"
+                                                onclick="openComment('{{CleanID(comment.id)}}');" value="Reply"/>
+                                            {% if session['zid'] == comment.content._from %}
+                                            <button style="margin-left:10px" class="btn btn-info small" type="submit"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                            {% endif %}
+                                        </form>
+            
+                                    </p>
+                                    <!-- Comment Box -->
+                                    <div class="comment-box" id="{{CleanID(comment.id)}}">
+                                        <form action="{{url_for('new_comment')}}" method="post">
+                                            <div class="row">
+                                                <input type="hidden" name="parent" value="{{comment.id}}">
+                                                <div class="col-2">
+                                                    <img class="mx-auto rounded-circle img-fluid" 
+                                                    src="{{url_for('static', filename=RemoveStatic( GetProfilePic(session['zid']) ))}}" 
+                                                    alt="avatar">                
+                                                </div>
+                                                <div class="col-9">
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" id="post-box" name="content" rows="3" placeholder="Reply to comment" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-1">
+                                                    <button class="btn btn-primary" type="submit">Post Reply</button>                            
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>                
+                                    <!-- /Comment Box -->
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- reply is indented -->
+                        {% for reply in comment.replies %}
+                        <div class="comment-reply col-md-11 offset-md-1 col-sm-10 offset-sm-2">
+                            <div class="row">
+                                <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
+                                    <a href="{{url_for('profile', zid=reply.content._from)}}"><img class="mx-auto rounded-circle img-fluid"
+                                        src="{{url_for('static', filename=RemoveStatic( GetProfilePic(reply.content._from) ))}}" 
+                                        alt="avatar"></a>
+                                </div>
+                                <div class="comment-content col-md-11 col-sm-10 col-12">
+                                    <h6 class="small comment-meta"><a href="{{url_for('profile', zid=reply.content._from)}}">{{ getdetails(reply.content._from).full_name }}</a> {{ parseTime(reply.content.time) }}</h6>
+                                    <div class="comment-body">
+                                        {% if post.content.message %}                    
+                                        <p>{{ ParseMessage(reply.content.message)|safe }}
+                                            <br>
+                                            <form class="form-inline" method="post" action="{{url_for('delete_comment')}}">
+                                                <input type="hidden" name="addr" value="{{reply.id}}"/>
+                                                {% if session['zid'] == reply.content._from %}
+                                                <button style="margin-left:10px" class="btn btn-info small" type="submit"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                {% endif %}
+                                            </form> 
+                                        </p>
+                                        {% endif %}                                
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                                
+                        {% endfor %}                            
+                        <!-- /reply is indented -->
+                    </div>
+                    {% endfor %}                            
+                    <!-- /comment is indented -->
+        
+                </div>
+        
+            </div>            
+        </div>
+        </div>
+        {% endfor %}
+
+
+
+
+
+
+
+    </div>
+</div>
+{% endif %}
+
+</div>
+{% endblock %}

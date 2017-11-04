@@ -1,0 +1,80 @@
+---------------------------------------------------------------------------
+In the context of computing, a shell is
+
+    part of the Unix operating system
+
+->  a program that arranges the execution of other programs
+
+    a component of a window manager such as fvwm
+
+    an object-oriented wrapper for a procedural program
+
+---------------------------------------------------------------------------
+Which one of the following regular expressions would match a non-empty string consisting only of the letters x, y and z, in any order?
+
+->  [xyz]+
+
+    x+y+z+
+
+    (xyz)*
+
+    x*y*z*
+---------------------------------------------------------------------------
+ Which one of the following commands would extract the student id field from a file in the following format:
+
+COMP3311;2122987;David Smith;95
+COMP3231;2233445;John Smith;51
+COMP3311;2233445;John Smith;76
+
+    cut -f 2
+
+    cut -d; -f 2
+
+    sed -e 's/.*;//'
+
+->  None of the above.
+---------------------------------------------------------------------------
+ Which one of the following Perl commands would acheive the same effect as in the previous question (i.e. extract the student id field)?
+
+    perl -e '{while () { split /;/; print;}}'
+
+    perl -e '{while () { split /;/; print $2;}}'
+
+->  perl -e '{while () { @x = split /;/; print "$x[1]\n";}}'
+
+    perl -e '{while () { @x = split /;/; print "$x[2]\n";}}'
+---------------------------------------------------------------------------
+Consider the following Perl program that processes its standard input:
+
+#!/usr/bin/perl -w
+while (<STDIN>) {
+    @marks = split;
+    $studentID = $marks[0];
+    for (i = 0; i < $#marks; i++) {
+        $totalMark += $marks[$i];
+    }
+    printf "%s %d\n", $studentID, $totalMark;
+}
+
+This program has several common mistakes in it. Indicate and describe the nature of each of these mistakes, and say what the program is attempting to do. 
+
+ANSWER:
+
+Purpose of program:
+
+- Add up the total marks of each student 
+- Print the student ID and the total Mark for each student entry
+- Assuming data format looks like:
+<studentID>  <mark>  <mark>  <mark>  <mark>  <mark>
+
+
+Mistakes:
+- not specified what string to split (should be $_)
+- not specified what delimeter to split string onm
+- for loop "i" variable - syntax error, should have a $ infront of it
+- marks length statement wrong, should just be $i < $marks
+
+
+---------------------------------------------------------------------------
+
+

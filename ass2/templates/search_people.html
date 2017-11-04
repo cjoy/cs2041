@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block body_contents %}
+<div class="container">
+
+<div class="mdl-card mdl-shadow--2dp" style="width:100%; min-height:20px; margin-bottom:20px; padding:20px">
+    <form action="{{url_for('search_people')}}" method="get">
+        <div class="form-group row">
+            <div class="col-10">
+               <input type="text" name="q" class="form-control form-control-lg" id="lgFormGroupInput" autofocus placeholder="Search For Students (eg. Bob Cutlass)">
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary" style="width:100%; height:100%">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% if query %}
+<div class="mdl-card mdl-shadow--2dp" style="width:100%">
+    <div style="padding: 40px">
+        <h2> {{ results|length }} people found - "{{ query }}" </h2><hr>
+        <div class="mdl-grid">
+            {% for result in results %}
+            <div class="mdl-cell mdl-cell--4-col  mdl-card mdl-shadow--2dp" style="width:200px">
+                <a href="{{url_for('profile',zid=result['zid'])}}"> 
+                <img class="card-img-top" style="width:100%" src="{{ url_for('static', filename=RemoveStatic(GetProfilePic(result['zid']))) }}" alt="Card image cap">
+                <div class="card-block">
+                    <h4 class="card-title">{{ result['full_name'] }}</h4>
+                </div>
+                </a>
+            </div>   
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% endif %}
+
+</div>
+{% endblock %}

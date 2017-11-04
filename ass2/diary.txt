@@ -1,0 +1,16 @@
+20/10/17	16:00	16:30	reading through specs and setting up git
+22/10/17	18:00	18:15	getting flask set up, generating controllers
+22/10/17	19:00	21:15	starting subset 1
+23/10/17	19:00	21:23	continuing on with subset 1, finishing off a bit of structual changes
+25/10/17	18:00	18:15	getting bootstrap and mdl set up, installing jquery
+25/10/17	18:00	18:15	starting on subset 2, refactoring app route
+26/10/17	12:00	13:55	login page and feeds page
+26/10/17	14:00	15:21	working on tagging and other misc items, getting posts to display correctly
+26/10/17	16:00	17:10	working on subset 2
+26/10/17	19:00	21:44	working on subset 2, getting searching for post ready
+27/10/17	21:00	24:00	optimisng searching for posts, continuing on with subset 22
+27/10/17	06:00	08:35	working on subset 3, getting adding friends right
+28/10/17	18:00	18:52	delete friends and html safe rending
+29/10/17	09:00	18:15	working on subset 3, comment replying complete
+29/10/17	18:34	18:15	conting working on subset 3
+30/10/17	01:00	01:15	submitting files

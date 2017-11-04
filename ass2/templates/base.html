@@ -1,0 +1,74 @@
+<!doctype html>
+<!--
+    STYLING FRAMEWORK ATTRIBUTES
+    - Material Design Lite (by Google)
+    - Bootstrap (by Twitter)
+    - FortAwesome Icons (by FortAwesome Inc)
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>{{ title }} | UNSWtalk</title>
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/7d7495a85d.js"></script>    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">    
+    <link href="{{url_for('static', filename='UNSWtalk.css')}}") rel="stylesheet">
+  </head>
+  <body>
+    <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+      <header class="mdl-layout__header mdl-color--white mdl-color-text--black">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">{{ title }}</span>
+          <div class="mdl-layout-spacer"></div>
+        </div>
+      </header>
+      <div class="demo-drawer mdl-layout__drawer mdl-color--blue mdl-color-text--white">
+        <header class="demo-drawer-header">
+          <!-- <img src="images/user.jpg" class="demo-avatar">
+          <div class="demo-avatar-dropdown">
+            <span>hello@example.com</span>
+            <div class="mdl-layout-spacer"></div>
+            <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+              <i class="material-icons" role="presentation">arrow_drop_down</i>
+              <span class="visuallyhidden">Accounts</span>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+              <li class="mdl-menu__item">hello@example.com</li>
+              <li class="mdl-menu__item">info@example.com</li>
+              <li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
+            </ul>
+          </div> -->
+        </header>
+        <nav class="demo-navigation mdl-navigation mdl-color--blue mdl-layout-spacer mdl-color-text--white">
+            <div class="navbar nav_title" style="border: 0;">
+                <center><h1><b>_</b>UNSW<b style="color:yellow">talk</b></h1></center>
+            </div><br>
+
+        <!-- <a class="mdl-navigation__link" style="color:white" href="">My Profile</a> -->
+            <a class="mdl-navigation__link" style="color:white" href="{{url_for('start')}}"><i class="fa fa-rss" aria-hidden="true"></i><b style="font-size:17px"> My Feeds</b></a>
+            <a class="mdl-navigation__link" style="color:white" href="{{url_for('profile', zid=session['zid'])}}"> <i class="fa fa-user-o" aria-hidden="true"></i><b style="font-size:17px"> My Profile</b></a>
+            <a class="mdl-navigation__link" style="color:white" href="{{url_for('search_people')}}"><i class="fa fa-search" aria-hidden="true"></i><b style="font-size:17px"> Find People</b></a>
+            <a class="mdl-navigation__link" style="color:white" href="{{url_for('search_posts')}}"><i class="fa fa-search" aria-hidden="true"></i><b style="font-size:17px"> Search Posts</b></a>
+            <div class="mdl-layout-spacer"></div>
+            <a class="mdl-navigation__link" style="color:white" href="{{url_for('logout')}}"><i class="fa fa-sign-in" aria-hidden="true"></i> <b style="font-size:18px"> Logout</b></a>
+        </nav>
+      </div>
+      <main class="mdl-layout__content mdl-color--grey-100">
+        <div class="mdl-grid demo-content">
+            {% block body_contents %} {% endblock %}            
+        </div>
+      </main>
+    </div>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>    
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </body>
+</html>
