@@ -1,0 +1,223 @@
+=========================================================================
+
+    Write a regexp to match C preprocessor commands in a C program.
+	^#
+    Write a regexp to match all the lines in a C program except preprocessor commands
+	^[^#]
+    Write a regexp to find line in a C program with trailing white space - one or white space at the end of line
+	\s$
+    Write a regexp to match the names Barry, Harry, Larry and Parry
+	(B|H|L|P)arry
+    Write a regexp to match a string containing the word hello followed later by the word world
+	hello.*world
+    Write regexp to match the word calendar and all mis-spellings with 'a' replaced 'e' or vice-versa
+	c[a|e]l[a|e]nd[a|e]r
+    Write regexp to match a list of positive integers separated by commas, e.g. 2,4,8,16,32
+	[0-9]+(,[0-9]+)*
+    Write regexp to match a C string whose last character is newline 
+	\".*\\n\";$
+=========================================================================
+Give five reasons why this attempt to search a file for HTML paragraph and break tags may fail.
+
+grep <p>|<br> /tmp/index.html
+
+ - not regular expression (need to use egrep for that)
+ - <> is part of shell syntax, need to quote them
+ - won't detect for upper case tags
+ - won't detect commented out tags (eg. <!--- will result in the tag not showing up)
+ - 
+
+ Give egrep commands that will work. 
+
+egrep '<[pP]>|<[bB][rR]>' /tmp/index.html
+
+==========================================================================
+For each of the regular expression below indicate how many different strings the pattern matches and give some example of the strings it matches. If possible these example should include the shortest string and the longest string.
+
+    Perl
+	Matches: 1
+	Example: Perl
+	Shortest: Perl
+	Longest: Perl
+
+    Pe*r*l
+	Matches: arbitrary
+	Example: Peeaadral, Peeatdfrrrrasdsl
+	Shortest: Perl
+	Longest: 
+
+    Full-stop.
+	Matches: 9 or 10 (includes a char from the character set)
+	Example: Full-stop, Full-stops 
+	Shortest: Full-stop
+	Longest: Full-stopa, Full-stope
+
+    [1-9][0-9][0-9][0-9]
+	Matches: 9000 (not 9000)
+	Example: 9999, 1000, 1111
+	Shortest: 1000
+	Longest: 9000
+
+    I (love|hate) programming in (Perl|Python) and (Java|C)
+	Matches: 2*(1+1+1+1) = 8
+	Example: 
+	Shortest: I love programming in Perl and C 
+	Longest: I (love|hate) programming in Python and Java
+
+==========================================================================
+ This regular expression [0-9]*.[0-9]* is intended to match floating point numbers such as '42.5'. Is it appropriate? 
+Nope, there needs to be atleast one or more occurences of # in #.# in order for it to be a decimal
+. is interpretted as any character in the character set, so we need to make it the litteral character by using \.
+[0-9]+\.[0-9]+
+
+===========================================================================
+What does the command egrep -v . print and why?
+
+Answer:
+Prints out all lines that doesn't contain (-v :inverse) any single character
+So all lines without a single character in the character set will be printed out.
+eg. Line containing "AA" will be printed out, but a line containing "A" wont be printed. 
+
+Give an equivalent egrep command with no options, in other words without the -v and with a different pattern. 
+egrep $^
+===========================================================================
+Write an egrep command which will print any lines in a file ips.txt containing an IP addresses in the range 129.94.172.1 to 129.94.172.25 
+
+egrep "129\.94\.172\.([1-9]|1[0-9]|2[0-5])$"
+
+===========================================================================
+
+For each of the scenarios below
+
+    describe the strings being matched using an English sentence
+    give a POSIX regular expression to match this class of strings 
+
+In the examples, the expected matches are highlighted in bold.
+
+    encrypted password fields (including the surrounding colons) in a Unix password file entry, e.g.
+
+    root:ZHolHAHZw8As2:0:0:root:/root:/bin/bash
+    jas:nJz3ru5a/44Ko:100:100:John Shepherd:/home/jas:/bin/bash
+
+	ANSWER: 
+	user's encrypted passwords are being matched, since passwords 
+	regex: ^[a-z]+:(.*):
+
+
+    positive real numbers at the start of a line (using normal fixed-point notation for reals, not the kind of scientific notation you find in programming languages), e.g.
+
+    3.141 value of Pi
+    90.57 maximum hits/sec
+    half of the time, life is silly
+    0.05% is the legal limit
+    42 - the meaning of life
+    this 1.333 is not at the start
+
+
+	ANSWER:
+	^[0-9]+(\.[0-9]+)
+	
+
+    Names as represented in this file containing details of tute/lab enrolments:
+
+        2134389|Wang, Duved Seo Ken         |fri15-spoons|
+        2139656|Undirwaad, Giaffriy Jumis   |tue13-kazoo|
+        2154877|Ng, Hinry                   |tue17-kazoo|
+        2174328|Zhung, Yung                 |thu17-spoons|
+        2234136|Hso, Men-Tsun               |tue09-harp|
+        2254148|Khorme, Saneu               |tue09-harp|
+        2329667|Mahsin, Zumel               |tue17-kazoo|
+        2334348|Trun, Toyin Hong Recky      |mon11-leaf|
+        2336212|Sopuvunechyunant, Sopuchue  |mon11-leaf|
+        2344749|Chung, Wue Sun              |fri09-harp|
+        ...
+
+	ANSWER:
+	[^|,]+, [^|]+
+
+    Names as above, but without the trailing spaces (difficult). Hint: what are given names composed of, and how many of these things can there be? 
+
+===========================================================================
+Consider the following columnated (space-delimited) data file containing marks information for a single subject:
+
+2111321 37 FL
+2166258 67 CR
+2168678 84 DN
+2186565 77 DN
+2190546 78 DN
+2210109 50 PS
+2223455 95 HD
+2266365 55 PS
+...
+
+Assume that the student number occurs at the beginning of the line, that the file is sorted on student number, and that nobody scores 100.
+
+    Give calls to the sort filter to display the data:
+        in order on student number
+	sort -k < data
+
+        in ascending order on mark
+	sort -k2 -n < data
+
+        in descending order on mark
+	sort -k2 -nr < data
+
+    Write calls to the grep filter to select details of:
+        students who failed
+	grep 'FL' data  < data
+
+        students who scored above 90
+	grep ' 9[1-9]' < data
+
+        students with even student numbers
+	grep '^[0-9][02468]' < data
+
+    Write a pipeline to print:
+        the details for the top 10 students (ordered by mark)
+	cat data | sort -n -k2 | tail -10
+
+        the details for the bottom 5 students (ordered by mark)
+	cat data | sort -nr -k2 | tail -5
+
+    Assuming that the command cut -d' ' -f 3 can extract just the grades (PS, etc.), write a pipeline to show how many people achieved each grade (i.e. the grade distribution). E.g. for the above data:
+
+        1 CR
+        3 DN
+        1 FL
+        1 HD
+        2 PS
+
+	cat data | cut -d' ' -f3 | sort | uniq -c
+
+===================================================================================
+Consider the following text file containing details of tute/lab enrolments:
+
+    2134389|Wang, Duved Seo Ken         |fri15-spoons|
+    2139656|Undirwaad, Giaffriy Jumis   |tue13-kazoo|
+    2154877|Ng, Hinry                   |tue17-kazoo|
+    2174328|Zhung, Yung                 |thu17-spoons|
+    2234136|Hso, Men-Tsun               |tue09-harp|
+    2254148|Khorme, Saneu               |tue09-harp|
+    2329667|Mahsin, Zumel               |tue17-kazoo|
+    2334348|Trun, Toyin Hong Recky      |mon11-leaf|
+    2336212|Sopuvunechyunant, Sopuchue  |mon11-leaf|
+    2344749|Chung, Wue Sun              |fri09-harp|
+    ...
+
+Assuming that the file is called enrolments, write pipelines to answer each of the following queries:
+
+    Which tute is Hinry Ng enrolled in?
+	cat entrollments | grep 'Ng, Hinry' | cut -d\| -f3
+
+    How many different tutorials are there?
+	cat enrollments | cut -d\| -f3 | sort | uniq -c | wc -l
+
+    What is the number of students in each tute?
+	cat enrollments | cut -d\| -f3 | sort | uniq -c	
+
+    Are any students enrolled in multiple tutes? 
+	cat enrollments | cut -d\| -f2 | sort | uniq -c | column -t | egrep -v '1  ' 
+
+
+
+
