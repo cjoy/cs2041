@@ -1,0 +1,78 @@
+Imagine that we have just typed a shell script into the file myScript in the current directory. We then attempt to execute the script and observe the following:
+
+$ myScript
+myScript: command not found
+
+Explain the possible causes for this, and describe how to rectify them. 
+
+ANSWER:
+
+myScript is not in the current PATH.
+
+One could either add the directory myScript is to the current path variable (without overiding the other paths)
+or use "./myScript" to execute the script if it's in the current path.
+
+===========================================================================================================
+
+Consider the following columnated (space-delimited) data file containing contact information for various academic staff:
+
+G Keller       Newtown      9381-1234
+W H Wilson     Kingsford    9621-1234
+A Mahidadia    Randwick     9663-1234
+R Buckland     Randwick     9663-9876
+J A Shepherd   Botany       9665-4321
+A Taylor       Glebe        9692-1234
+M Pagnucco     North Ryde   9868-6789
+
+Note: This data is fictitious. Do not ring these phone numbers. I have no idea whether they are real or not, but they are certainly not the correct phone numbers for the academic staff mentioned.
+The data is currently sorted in phone number order. Can we use the sort filter to re-arrange the data into "telephone-book" order? If not, how would we need to change the file in order to achieve this? 
+
+
+
+No, we can't order by phone numbers since there is a un even number of fields as some names contain midd names.
+
+In order to get a consistent number of fields, one could
+combine middle numbers and last names with a heiphen or dot.
+E.g. 
+
+"J A Shepherd" = > "J A.Shepherd"
+
+===========================================================================================================
+
+Consider the Unix password file (/etc/passwd):
+
+    root:ZHolHAHZw8As2:0:0:root:/root:/bin/bash
+    jas:iaiSHX49Jvs8.:100:100:John Shepherd:/home/jas:/bin/bash
+    postgres::997:997:PostgreSQL Admin:/usr/local/pgsql:/bin/bash
+    oracle::999:998:Oracle Admin:/home/oracle:/bin/bash
+    cs2041:rX9KwSSPqkLyA:2041:2041:COMP2041 Material:/home/cs2041:/bin/bash
+    cs3311:mLRiCIvmtI9O2:3311:3311:COMP3311 Material:/home/cs3311:/bin/bash
+    cs9311:fIVLdSXYoVFaI:9311:9311:COMP9311 Material:/home/cs9311:/bin/bash
+    cs9314:nTn.JwDgZE1Hs:9314:9314:COMP9314 Material:/home/cs9314:/bin/bash
+    cs9315:sOMXwkqmFbKlA:9315:9315:COMP9315 Material:/home/cs9315:/bin/bash
+
+Provide a command that would produce each of the following results:
+
+    display the first three lines of the file
+	
+	head -3
+
+    display lines belonging to class accounts
+	
+	egrep "^(cs|se|bi|en)[0-9]{4}"
+
+    (assume that their login name starts with either "cs", "se", "bi" or "en", followed by a digit)
+
+    display the user name of everyone whose shell is /bin/bash
+	
+	egrep "/bin/bash$" | cut -d':' -f1
+
+    create a tab-separated file passwords.txt containing only login name and password for all users 
+	
+	cut -d':' -f1,2 | tr ':' '\t' > passwords.txt
+	
+
+===========================================================================================================
+
+
+
